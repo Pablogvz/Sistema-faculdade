@@ -7,14 +7,10 @@ using System.Threading.Tasks;
 namespace Sapiens.Shared.Entities
 {
     // Professor herda de Funcionario
-    internal class Professor : Funcionario
+    public class Professor : Funcionario
     {
-        // Construtor que usa o construtor da classe base
-        public Professor(string nome, Curso curso)
-            : base(nome, curso)
-        {
-        }
+        public int CargaHoraria { get; set; }
 
-        // Outras propriedades ou métodos específicos da classe Professor podem ser adicionados aqui
+        public Curso? Curso { get; set; }
     }
 }

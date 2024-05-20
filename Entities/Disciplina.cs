@@ -8,5 +8,7 @@ public class Disciplina
     [StringLength(100)]
     public required string Nome { get; set; }
 
+    public Curso? curso { get; set; }
+
     public TipoDisciplina Tipo { get; set; }
 }

@@ -7,22 +7,9 @@ using System.Threading.Tasks;
 
 namespace Sapiens.Shared.Entities
 {
-    public class Funcionario
+    public class Funcionario : Pessoa
     {
-        [StringLength(100)]
-        public string Nome { get; set; }
-
-        public Curso Curso { get; set; }
-
-        public Funcionario(string nome, Curso curso)
-        {
-            Nome = nome;
-            Curso = curso;
-        }
-
-        public override string ToString()
-        {
-            return Nome;
-        }
+        public decimal Salario { get; set; }
+        public string? Cargo { get; set; }
     }
 }

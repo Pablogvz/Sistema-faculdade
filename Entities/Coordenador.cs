@@ -7,17 +7,8 @@ using System.Threading.Tasks;
 
 namespace Sapiens.Shared.Entities
 {
-    public class Coordenador : Funcionario
+    public class Coordenador : Professor
     {
-        // Construtor que usa o construtor da classe base
-        public Coordenador(string nome, Curso curso)
-            : base(nome, curso)
-        {
-        }
-
-        public override string ToString()
-        {
-            return Nome;
-        }
+        public decimal Gratificacao { get; set; }
     }
 }
