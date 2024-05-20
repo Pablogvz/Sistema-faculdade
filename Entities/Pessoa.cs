@@ -13,9 +13,9 @@ namespace Sapiens.Shared.Entities
         public int? Idade { get; set; }
         public string? Cpf { get; set; }
 
-        private string? email { get; set; }
+        public string? Email { get; set; }
 
-        private string? celular { get; set; }
+        public string? Telefone { get; set; }
 
         public TipoSexo Sexo { get; set; }
 
