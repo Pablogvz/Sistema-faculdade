@@ -7,7 +7,7 @@ using Sapiens.Shared.Enums;
 
 namespace Sapiens.Shared.Entities
 {
-    public class Pessoa
+    public class Pessoa : Entidade
     {
         public string? Nome { get; set; }
         public int? Idade { get; set; }

@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace Sapiens.Shared.Entities
 {
-    // Professor herda de Funcionario
-    public class Professor : Funcionario
+    // Professor herda de Pessoa
+    public class Professor : Pessoa
     {
+
+        public string? Formacao { get; set; }
+        public bool Coordenador { get; set; }
         public int CargaHoraria { get; set; }
 
-        public Curso? Curso { get; set; }
+        public List<Disciplina>? Disciplinas { get; } = new();
     }
 }
