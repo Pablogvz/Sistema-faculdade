@@ -1,6 +1,3 @@
-﻿using Sapiens.Shared.Entities;
+﻿using Sapiens.Shared.Helpers;
 
-Curso curso = new Curso();
-
-curso.Nome = "Eng. da Computação";
-Console.WriteLine(curso.Nome);
+ConsoleHelper.Menu();

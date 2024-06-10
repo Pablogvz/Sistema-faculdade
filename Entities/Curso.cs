@@ -13,6 +13,8 @@ public class Curso : Entidade
 
     public TipoCurso Tipo { get; set; }
 
+    public Professor? Coordenador { get; set; }
+
     public override string ToString()
     {
         return Nome ?? "";
