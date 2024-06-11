@@ -52,7 +52,7 @@ public static partial class ConsoleHelper
     public static void ConsultarAlunos()
     {
         CriarTitulo("Sapiens - Consultar Aluno");
-        var termo = LeiaTexto("Termo de pesquisa");
+        var termo = LeiaTexto("Pesquise por CPF ou Nome");
         termo = termo.ToLower();
         var alunos = context.Alunos
             .Where(a => (a.Nome.ToLower().Contains(termo)) || a.Cpf.Contains(termo))

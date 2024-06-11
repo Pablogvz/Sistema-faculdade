@@ -38,10 +38,21 @@ public static partial class ConsoleHelper
         MenuProfessor();
     }
 
+    public static void ListarRemocaoProfessores()
+    {
+        CriarTitulo("Sapiens - Lista de Professores");
+        var professores = context.Professores.OrderBy(p => p.Nome).ToList();
+        foreach (var professor in professores)
+        {
+            Console.WriteLine($"Professor(a):{professor.Cpf} - {professor.Nome}");
+        }
+        Console.WriteLine("-----------------------------------");
+    }
+
     public static void ConsultarProfessores()
     {
         CriarTitulo("Sapiens - Consultar Professor");
-        var termo = LeiaTexto("Termo de pesquisa");
+        var termo = LeiaTexto("Pesquise por CPF ou Nome");
         termo = termo.ToLower();
         var professores = context.Professores
             .Where(p => (p.Nome.ToLower().Contains(termo)) || p.Cpf.Contains(termo))
@@ -75,8 +86,9 @@ public static partial class ConsoleHelper
     public static void RemoverProfessor()
     {
         CriarTitulo("Sapiens - Remover Professor");
-        var id = LeiaInteiro("Id do Professor");
-        var professor = context.Professores.Find(id);
+        ListarRemocaoProfessores();
+        var cpf = LeiaTexto("CPF do Professor(a):");
+        var professor = context.Professores.FirstOrDefault(a => a.Cpf == cpf);
         if (professor != null)
         {
             context.Remove(professor);

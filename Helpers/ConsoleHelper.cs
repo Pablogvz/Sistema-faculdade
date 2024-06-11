@@ -26,7 +26,7 @@ public static partial class ConsoleHelper
             case "2": MenuDisciplina(); break;
             case "3": MenuProfessor(); break;
             case "4": MenuAluno(); break;
-            case "5": MenuAluno(); break;
+            case "5": MenuMatricula(); break;
             case "6": FazerMigracao(); break;
             case "7": return;
             default:
@@ -52,11 +52,6 @@ public static partial class ConsoleHelper
         Console.ReadLine();
     }
 
-    public static void NaoImplentado()
-    {
-        EnterParaContinuar("Funcionalidade ainda não implementada.");
-    }
-
     public static void CriarTitulo(string titulo)
     {
         Console.Clear();
@@ -76,8 +71,18 @@ public static partial class ConsoleHelper
     {
         Console.Write($"{rotulo}: ");
         var entrada = Console.ReadLine();
-        return entrada != null ? Convert.ToInt32(entrada) : 0;
+
+        if (int.TryParse(entrada, out int valor))
+        {
+            return valor;
+        }
+        else
+        {
+            Console.WriteLine("Entrada inválida. O valor será definido como 0.");
+            return 0;
+        }
     }
+
 
     public static double LeiaReal(string rotulo)
     {

@@ -34,7 +34,7 @@ public static partial class ConsoleHelper
         var cursos = context.Cursos.Include(c => c.Coordenador).OrderBy(c => c.Nome).ToList();
         foreach (var curso in cursos)
         {
-            Console.WriteLine($"{curso.Id}. {curso}");
+            Console.WriteLine($"ID: {curso.Id}. Curso: {curso.Nome}. Coordenador: {curso?.Coordenador?.Nome} ");
         }
         EnterParaContinuar("-----------------------------------");
         MenuCurso();
@@ -46,7 +46,18 @@ public static partial class ConsoleHelper
         var cursos = context.Cursos.Include(c => c.Coordenador).OrderBy(c => c.Nome).ToList();
         foreach (var curso in cursos)
         {
-            Console.WriteLine($"ID: {curso.Id}. Curso: {curso}");
+            Console.WriteLine($"ID: {curso.Id}. Curso: {curso.Nome}. Coordenador: {curso?.Coordenador?.Nome} ");
+        }
+        Console.WriteLine("-----------------------------------");
+    }
+
+    public static void ListarCoordenadores()
+    {
+        CriarTitulo("Sapiens - Lista de Coordenadores");
+        var coordenadores = context.Professores.OrderBy(p => p.Nome).ToList();
+        foreach (var coordenador in coordenadores)
+        {
+            Console.WriteLine($"CPF: {coordenador.Cpf} - Nome: {coordenador.Nome}");
         }
         Console.WriteLine("-----------------------------------");
     }
@@ -54,7 +65,7 @@ public static partial class ConsoleHelper
     public static void ConsultarCurso()
     {
         CriarTitulo("Sapiens - Consultar Curso");
-        var termo = LeiaTexto("Termo de pesquisa");
+        var termo = LeiaTexto("Pesquise por Nome do Curso");
         termo = termo.ToLower();
         var cursos = context.Cursos.Where(c => c.Nome != null && c.Nome.ToLower().Contains(termo)).ToList();
         foreach (var curso in cursos)
@@ -75,6 +86,9 @@ public static partial class ConsoleHelper
             Nome = nome,
             CargaHoraria = ch
         };
+
+        ListarCoordenadores();
+
 
         var cpf = LeiaTexto("Cpf do Coordenador");
         if (cpf != "")
