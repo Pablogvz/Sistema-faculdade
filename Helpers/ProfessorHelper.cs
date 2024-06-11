@@ -11,7 +11,8 @@ public static partial class ConsoleHelper
         Console.WriteLine(" [1] Listar");
         Console.WriteLine(" [2] Consultar");
         Console.WriteLine(" [3] Adicionar");
-        Console.WriteLine(" [4] Remover");
+        Console.WriteLine(" [4] Editar");
+        Console.WriteLine(" [5] Remover");
         Console.WriteLine("\n [9] Voltar");
         Console.WriteLine("-----------------------------------");
         Console.Write(" \nOpção: ");
@@ -21,7 +22,8 @@ public static partial class ConsoleHelper
             case "1": ListarProfessores(); break;
             case "2": ConsultarProfessores(); break;
             case "3": AdicionarProfessor(); break;
-            case "4": RemoverProfessor(); break;
+            case "4": EditarProfessor(); break;
+            case "5": RemoverProfessor(); break;
             case "9": Menu(); break;
         }
     }
@@ -80,6 +82,32 @@ public static partial class ConsoleHelper
         context.Add(professor);
         context.SaveChanges();
         EnterParaContinuar("-----------------------------------\nProfessor Adicionado");
+        MenuProfessor();
+    }
+
+    public static void EditarProfessor()
+    {
+        CriarTitulo("Sapiens - Editar Professor");
+        ListarRemocaoProfessores();
+        var cpf = LeiaTexto("Cpf do Professor a Editar");
+        var professor = context.Professores.FirstOrDefault(p => p.Cpf == cpf);
+        if (professor != null)
+        {
+            var novoNome = LeiaTexto($"Novo Nome do Professor (Atual: {professor.Nome})");
+            professor.Nome = string.IsNullOrEmpty(novoNome) ? professor.Nome : novoNome;
+
+            var novoCpf = LeiaTexto($"Novo Cpf do Professor (Atual: {professor.Cpf})");
+            professor.Cpf = string.IsNullOrEmpty(novoCpf) ? professor.Cpf : novoCpf;
+
+            context.Update(professor);
+            context.SaveChanges();
+            Console.WriteLine("Professor atualizado.");
+        }
+        else
+        {
+            Console.WriteLine("Professor inexistente.");
+        }
+        EnterParaContinuar("-----------------------------------");
         MenuProfessor();
     }
 

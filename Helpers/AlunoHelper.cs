@@ -11,7 +11,8 @@ public static partial class ConsoleHelper
         Console.WriteLine(" [1] Listar");
         Console.WriteLine(" [2] Consultar");
         Console.WriteLine(" [3] Adicionar");
-        Console.WriteLine(" [4] Remover");
+        Console.WriteLine(" [4] Editar");
+        Console.WriteLine(" [5] Remover");
         Console.WriteLine("\n [9] Voltar");
         Console.WriteLine("-----------------------------------");
         Console.Write(" \nOpção: ");
@@ -21,7 +22,8 @@ public static partial class ConsoleHelper
             case "1": ListarAlunos(); break;
             case "2": ConsultarAlunos(); break;
             case "3": AdicionarAlunos(); break;
-            case "4": RemoverAlunos(); break;
+            case "4": EditarAlunos(); break;
+            case "5": RemoverAlunos(); break;
             case "9": Menu(); break;
         }
     }
@@ -80,6 +82,32 @@ public static partial class ConsoleHelper
         context.Add(aluno);
         context.SaveChanges();
         EnterParaContinuar("-----------------------------------\nAluno Adicionado");
+        MenuAluno();
+    }
+
+    public static void EditarAlunos()
+    {
+        CriarTitulo("Sapiens - Editar Aluno");
+        ListarRemocaoAlunos();
+        var cpf = LeiaTexto("Cpf do Aluno a Editar");
+        var aluno = context.Alunos.FirstOrDefault(a => a.Cpf == cpf);
+        if (aluno != null)
+        {
+            var novoNome = LeiaTexto($"Novo Nome do Aluno (Atual: {aluno.Nome})");
+            aluno.Nome = string.IsNullOrEmpty(novoNome) ? aluno.Nome : novoNome;
+
+            var novoCpf = LeiaTexto($"Novo Cpf do Aluno (Atual: {aluno.Cpf})");
+            aluno.Cpf = string.IsNullOrEmpty(novoCpf) ? aluno.Cpf : novoCpf;
+
+            context.Update(aluno);
+            context.SaveChanges();
+            Console.WriteLine("Aluno atualizado.");
+        }
+        else
+        {
+            Console.WriteLine("Aluno inexistente.");
+        }
+        EnterParaContinuar("-----------------------------------");
         MenuAluno();
     }
 
