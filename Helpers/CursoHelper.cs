@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Sapiens.Shared.Entities;
 
 namespace Sapiens.Shared.Helpers;
@@ -13,7 +12,8 @@ public static partial class ConsoleHelper
         Console.WriteLine(" [1] Listar");
         Console.WriteLine(" [2] Consultar");
         Console.WriteLine(" [3] Adicionar");
-        Console.WriteLine(" [4] Remover");
+        Console.WriteLine(" [4] Editar");
+        Console.WriteLine(" [5] Remover");
         Console.WriteLine("\n [9] Voltar");
         Console.WriteLine("-----------------------------------");
         Console.Write(" \nOpção: ");
@@ -23,7 +23,8 @@ public static partial class ConsoleHelper
             case "1": ListarCursos(); break;
             case "2": ConsultarCurso(); break;
             case "3": AdicionarCurso(); break;
-            case "4": RemoverCurso(); break;
+            case "4": EditarCurso(); break;
+            case "5": RemoverCurso(); break;
             case "9": Menu(); break;
         }
     }
@@ -40,7 +41,7 @@ public static partial class ConsoleHelper
         MenuCurso();
     }
 
-    public static void ListarRemocaoCursos()
+    public static void ListarAcaoCursos()
     {
         CriarTitulo("Sapiens - Lista de Cursos");
         var cursos = context.Cursos.Include(c => c.Coordenador).OrderBy(c => c.Nome).ToList();
@@ -89,7 +90,6 @@ public static partial class ConsoleHelper
 
         ListarCoordenadores();
 
-
         var cpf = LeiaTexto("Cpf do Coordenador");
         if (cpf != "")
         {
@@ -105,10 +105,47 @@ public static partial class ConsoleHelper
         MenuCurso();
     }
 
+    public static void EditarCurso()
+    {
+        CriarTitulo("Sapiens - Editar Curso");
+        ListarAcaoCursos();
+        var id = LeiaInteiro("Id do Curso");
+        var curso = context.Cursos.Include(c => c.Coordenador).FirstOrDefault(c => c.Id == id);
+        if (curso != null)
+        {
+            var nome = LeiaTexto($"Nome do Curso ({curso.Nome})");
+            if (!string.IsNullOrEmpty(nome))
+                curso.Nome = nome;
+
+            var ch = LeiaInteiro($"Carga Horária ({curso.CargaHoraria})");
+            curso.CargaHoraria = ch;
+
+            ListarCoordenadores();
+            var cpf = LeiaTexto("Cpf do Coordenador");
+            if (!string.IsNullOrEmpty(cpf))
+            {
+                var coordenador = context.Professores.FirstOrDefault(p => p.Cpf == cpf);
+                if (coordenador != null)
+                    curso.Coordenador = coordenador;
+                else
+                    Console.WriteLine("Professor inexistente, coordenador não atribuído.");
+            }
+
+            context.Update(curso);
+            context.SaveChanges();
+            EnterParaContinuar("-----------------------------------\nCurso Atualizado");
+        }
+        else
+        {
+            Console.WriteLine("Curso inexistente.");
+        }
+        MenuCurso();
+    }
+
     public static void RemoverCurso()
     {
         CriarTitulo("Sapiens - Remover Curso");
-        ListarRemocaoCursos();
+        ListarAcaoCursos();
         var id = LeiaInteiro("Id do Curso");
         var curso = context.Cursos.Find(id);
         if (curso != null)

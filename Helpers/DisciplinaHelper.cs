@@ -15,7 +15,8 @@ namespace Sapiens.Shared.Helpers
             Console.WriteLine(" [1] Listar");
             Console.WriteLine(" [2] Consultar");
             Console.WriteLine(" [3] Adicionar");
-            Console.WriteLine(" [4] Remover");
+            Console.WriteLine(" [4] Editar");
+            Console.WriteLine(" [5] Remover");
             Console.WriteLine("\n [9] Voltar");
             Console.WriteLine("-----------------------------------");
             Console.Write(" \nOpção: ");
@@ -25,12 +26,13 @@ namespace Sapiens.Shared.Helpers
                 case "1": ListarDisciplinas(); break;
                 case "2": ConsultarDisciplina(); break;
                 case "3": AdicionarDisciplina(); break;
-                case "4": RemoverDisciplina(); break;
+                case "4": EditarDisciplina(); break;
+                case "5": RemoverDisciplina(); break;
                 case "9": Menu(); break;
             }
         }
 
-        public static void ListarRemocaoDisciplinas()
+        public static void ListarAcaoDisciplinas()
         {
             CriarTitulo("Sapiens - Lista de Disciplinas");
             var disciplinas = context.Disciplinas.Include(d => d.Professor).OrderBy(c => c.Nome).ToList();
@@ -79,7 +81,7 @@ namespace Sapiens.Shared.Helpers
 
             while (true)
             {
-                ListarRemocaoCursos();
+                ListarAcaoCursos();
                 var cursoIdInput = LeiaTexto("Informe o ID do Curso");
 
                 if (string.IsNullOrEmpty(cursoIdInput))
@@ -118,7 +120,7 @@ namespace Sapiens.Shared.Helpers
                 disciplina.CursoId = cursoId;
             }
 
-            ListarRemocaoProfessores();
+            ListarAcaoProfessores();
             var cpf = LeiaTexto("Cpf do Professor");
             if (!string.IsNullOrEmpty(cpf))
             {
@@ -137,7 +139,7 @@ namespace Sapiens.Shared.Helpers
         public static void RemoverDisciplina()
         {
             CriarTitulo("Sapiens - Remover Disciplina");
-            ListarRemocaoDisciplinas();
+            ListarAcaoDisciplinas();
             var id = LeiaInteiro("Id da Disciplina");
             var disciplina = context.Disciplinas.Find(id);
             if (disciplina != null)
@@ -151,6 +153,80 @@ namespace Sapiens.Shared.Helpers
                 Console.WriteLine("Disciplina inexistente.");
             }
             EnterParaContinuar("-----------------------------------");
+            MenuDisciplina();
+        }
+
+        public static void EditarDisciplina()
+        {
+            CriarTitulo("Sapiens - Editar Disciplina");
+            ListarAcaoDisciplinas();
+            var id = LeiaInteiro("Id da Disciplina a ser editada");
+            var disciplina = context.Disciplinas.Find(id);
+            if (disciplina != null)
+            {
+                Console.WriteLine("Deixe o campo em branco para manter o valor atual.");
+                var nome = LeiaTexto($"Nome da Disciplina ({disciplina.Nome})");
+                if (!string.IsNullOrEmpty(nome))
+                {
+                    disciplina.Nome = nome;
+                }
+
+                var cursoId = 0;
+                while (true)
+                {
+                    ListarAcaoCursos();
+                    var cursoIdInput = LeiaTexto($"Informe o ID do Curso ({disciplina.CursoId})");
+
+                    if (string.IsNullOrEmpty(cursoIdInput))
+                    {
+                        break;
+                    }
+
+                    if (int.TryParse(cursoIdInput, out cursoId))
+                    {
+                        var curso = context.Cursos.Find(cursoId);
+                        if (curso != null)
+                        {
+                            disciplina.CursoId = cursoId;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Curso inexistente, por favor, informe um ID válido.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("ID do curso inválido, por favor, informe um número válido.");
+                    }
+                }
+
+                var tipo = SelecionarTipoDisciplina();
+                disciplina.Tipo = tipo;
+
+                ListarAcaoProfessores();
+                var cpf = LeiaTexto($"Cpf do Professor ({disciplina.Professor?.Cpf ?? "N/A"})");
+                if (!string.IsNullOrEmpty(cpf))
+                {
+                    var professor = context.Professores.FirstOrDefault(p => p.Cpf == cpf);
+                    if (professor != null)
+                    {
+                        disciplina.Professor = professor;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Professor inexistente, disciplina não atribuída.");
+                    }
+                }
+
+                context.Update(disciplina);
+                context.SaveChanges();
+                EnterParaContinuar("-----------------------------------\nDisciplina Editada");
+            }
+            else
+            {
+                Console.WriteLine("Disciplina inexistente.");
+            }
             MenuDisciplina();
         }
 

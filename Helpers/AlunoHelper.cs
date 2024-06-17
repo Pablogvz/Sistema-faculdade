@@ -29,7 +29,7 @@ public static partial class ConsoleHelper
     }
 
 
-    public static void ListarRemocaoAlunos()
+    public static void ListarAcaoAlunos()
     {
         CriarTitulo("Sapiens - Lista de Alunos");
         var alunos = context.Alunos.OrderBy(a => a.Nome).ToList();
@@ -88,7 +88,7 @@ public static partial class ConsoleHelper
     public static void EditarAlunos()
     {
         CriarTitulo("Sapiens - Editar Aluno");
-        ListarRemocaoAlunos();
+        ListarAcaoAlunos();
         var cpf = LeiaTexto("Cpf do Aluno a Editar");
         var aluno = context.Alunos.FirstOrDefault(a => a.Cpf == cpf);
         if (aluno != null)
@@ -114,7 +114,7 @@ public static partial class ConsoleHelper
     public static void RemoverAlunos()
     {
         CriarTitulo("Sapiens - Remover Aluno");
-        ListarRemocaoAlunos();
+        ListarAcaoAlunos();
         var cpf = LeiaTexto("Cpf do Aluno");
         var aluno = context.Alunos.FirstOrDefault(a => a.Cpf == cpf);
         if (aluno != null)

@@ -40,7 +40,7 @@ public static partial class ConsoleHelper
         MenuProfessor();
     }
 
-    public static void ListarRemocaoProfessores()
+    public static void ListarAcaoProfessores()
     {
         CriarTitulo("Sapiens - Lista de Professores");
         var professores = context.Professores.OrderBy(p => p.Nome).ToList();
@@ -88,7 +88,7 @@ public static partial class ConsoleHelper
     public static void EditarProfessor()
     {
         CriarTitulo("Sapiens - Editar Professor");
-        ListarRemocaoProfessores();
+        ListarAcaoProfessores();
         var cpf = LeiaTexto("Cpf do Professor a Editar");
         var professor = context.Professores.FirstOrDefault(p => p.Cpf == cpf);
         if (professor != null)
@@ -114,7 +114,7 @@ public static partial class ConsoleHelper
     public static void RemoverProfessor()
     {
         CriarTitulo("Sapiens - Remover Professor");
-        ListarRemocaoProfessores();
+        ListarAcaoProfessores();
         var cpf = LeiaTexto("CPF do Professor(a):");
         var professor = context.Professores.FirstOrDefault(a => a.Cpf == cpf);
         if (professor != null)
